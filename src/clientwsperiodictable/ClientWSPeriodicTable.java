@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clientwsperiodictable;
 
 import java.util.Scanner;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
-/**
- *
- * @author Jfaber
- */
 public class ClientWSPeriodicTable {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
+       // Serializer serializer = new Persister();
         System.out.println(informativeMessage());
         
         String methodToUse = scanner.nextLine();
@@ -66,13 +57,20 @@ public class ClientWSPeriodicTable {
         return port.getElementSymbol(elementName);
     }
 
-    private static String getParameter(String methodType) {
+    private static String getParameter(String methodType) throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.println("type element's name: ");
         String elementName = scanner.nextLine();
+        Serializer serializer;
+        String source;
+        NewDataSet1 NewDataSet;
         switch (methodType) {
             case "1":
-                return getAtomicNumber(elementName);
+                serializer = new Persister();
+                source =getAtomicNumber(elementName);
+                NewDataSet = new NewDataSet1();
+                serializer.read(NewDataSet, source);
+                return NewDataSet.getTable().getAtomicNumber();
             case "2":
                 return getAtomicWeight(elementName);
             default:
